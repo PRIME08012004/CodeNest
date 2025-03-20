@@ -7,8 +7,8 @@ function GitHubCorner() {
 
     return (
         <a
-            href="https://github.com/sahilatahar/Code-Sync"
-            className="github-corner"
+            href="https://github.com/Rohitpotdar44/CodeNest"
+      className="github-corner"
             aria-label="View source on GitHub"
             target="_blank"
             rel="noreferrer"
@@ -16,7 +16,7 @@ function GitHubCorner() {
                 display: showGitHubCorner && width > 640 ? "block" : "none",
             }}
         >
-            <svg
+            <svg    
                 width="150"
                 height="100"
                 viewBox="0 0 250 250"

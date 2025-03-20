@@ -99,6 +99,8 @@ function RenameView({ id, preName, setEditing, type }: RenameViewProps) {
                     autoFocus
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter a new name"
+                    title="Rename input"
                 />
             </form>
         </div>

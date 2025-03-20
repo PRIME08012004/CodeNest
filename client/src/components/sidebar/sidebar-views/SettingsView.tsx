@@ -96,6 +96,7 @@ function SettingsView() {
                         type="checkbox"
                         onChange={handleShowGitHubCornerChange}
                         checked={showGitHubCorner}
+                        title="Toggle GitHub corner visibility"
                     />
                     <div className="peer h-6 w-12 rounded-full bg-darkHover outline-none duration-100 after:absolute after:left-1 after:top-1 after:flex after:h-4 after:w-4 after:items-center after:justify-center after:rounded-full after:bg-white after:font-bold after:outline-none after:duration-500 peer-checked:after:translate-x-6 peer-checked:after:border-white peer-focus:outline-none"></div>
                 </label>
