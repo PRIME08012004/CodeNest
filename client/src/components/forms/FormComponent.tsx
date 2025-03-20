@@ -6,7 +6,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef } from "react"
 import { toast } from "react-hot-toast"
 import { useLocation, useNavigate } from "react-router-dom"
 import { v4 as uuidv4 } from "uuid"
-import logo from "@/assets/logo.svg"
+import logo from "@/assets/Code Nest.png"
 
 const FormComponent = () => {
     const location = useLocation()
@@ -120,7 +120,7 @@ const FormComponent = () => {
                 className="cursor-pointer select-none underline"
                 onClick={createNewRoomId}
             >
-                Generate Unique Room Id
+                Generate Unique Room Id         
             </button>
         </div>
     )

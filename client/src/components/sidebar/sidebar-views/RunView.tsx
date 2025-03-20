@@ -35,7 +35,11 @@ function RunView() {
             <h1 className="view-title">Run Code</h1>
             <div className="flex h-[90%] w-full flex-col items-end gap-2 md:h-[92%]">
                 <div className="relative w-full">
+                    <label htmlFor="language-select" className="sr-only">
+                        Select Language
+                    </label>
                     <select
+                        id="language-select"
                         className="w-full rounded-md border-none bg-darkHover px-4 py-2 text-white outline-none"
                         value={JSON.stringify(selectedLanguage)}
                         onChange={handleLanguageChange}
