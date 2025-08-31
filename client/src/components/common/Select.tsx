@@ -11,9 +11,9 @@ interface SelectProps {
 function Select({ onChange, value, options, title }: SelectProps) {
     return (
         <div className="relative w-full">
-            <label className="mb-2">{title}</label>
+            <label className="mb-2 text-light font-medium">{title}</label>
             <select
-                className="w-full rounded-md border-none bg-darkHover px-4 py-2 text-white outline-none"
+                className="w-full appearance-none pr-10 bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#404040] transition-colors"
                 value={value}
                 onChange={onChange}
             >
@@ -31,7 +31,7 @@ function Select({ onChange, value, options, title }: SelectProps) {
             </select>
             <PiCaretDownBold
                 size={16}
-                className="absolute bottom-3 right-4 z-10 text-white"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
             />
         </div>
     )
