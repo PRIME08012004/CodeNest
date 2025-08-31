@@ -11,8 +11,9 @@ interface SelectProps {
 function Select({ onChange, value, options, title }: SelectProps) {
     return (
         <div className="relative w-full">
-            <label className="mb-2 text-light font-medium">{title}</label>
+            <label htmlFor={`select-${title}`} className="mb-2 text-light font-medium">{title}</label>
             <select
+                id={`select-${title}`}
                 className="w-full appearance-none pr-10 bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#404040] transition-colors"
                 value={value}
                 onChange={onChange}

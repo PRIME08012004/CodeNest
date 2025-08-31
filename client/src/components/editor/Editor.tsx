@@ -4,11 +4,8 @@ import { useSettings } from "@/context/SettingContext"
 import { useSocket } from "@/context/SocketContext"
 import usePageEvents from "@/hooks/usePageEvents"
 import useResponsive from "@/hooks/useResponsive"
-import { editorThemes } from "@/resources/Themes"
 import { FileSystemItem } from "@/types/file"
 import { SocketEvent } from "@/types/socket"
-import { color } from "@uiw/codemirror-extensions-color"
-import { hyperLink } from "@uiw/codemirror-extensions-hyper-link"
 import { LanguageName, loadLanguage } from "@uiw/codemirror-extensions-langs"
 import CodeMirror, {
     Extension,
@@ -23,7 +20,7 @@ import { EditorView } from "@codemirror/view"
 function Editor() {
     const { users, currentUser } = useAppContext()
     const { activeFile, setActiveFile } = useFileSystem()
-    const { theme, language, fontSize } = useSettings()
+    const { language, fontSize } = useSettings()
     const { socket } = useSocket()
     const { viewHeight } = useResponsive()
     const [timeOut, setTimeOut] = useState(setTimeout(() => {}, 0))
@@ -53,10 +50,11 @@ function Editor() {
         setTimeOut(newTimeOut)
     }
 
-    // Listen wheel event to zoom in/out and prevent page reload
+    // handle zoom and page events
     usePageEvents()
 
     useEffect(() => {
+        // custom theme for editor
         const codeNestTheme = EditorView.theme(
             {
                 "&": {
@@ -103,8 +101,6 @@ function Editor() {
         )
 
         const extensions = [
-            color,
-            hyperLink,
             tooltipField(filteredUsers),
             cursorTooltipBaseTheme,
             scrollPastEnd(),
@@ -127,7 +123,6 @@ function Editor() {
 
     return (
         <CodeMirror
-            theme={editorThemes[theme]}
             onChange={onCodeChange}
             value={activeFile?.content}
             extensions={extensions}

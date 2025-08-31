@@ -27,7 +27,7 @@ export const useSocket = (): SocketContextType => {
     return context
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const SocketProvider = ({ children }: { children: ReactNode }) => {
     const {
@@ -47,7 +47,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
     )
 
     const handleError = useCallback(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // handle connection errors
         (err: any) => {
             console.log("socket error", err)
             setStatus(USER_STATUS.CONNECTION_FAILED)
@@ -58,6 +58,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
     )
 
     const handleUsernameExist = useCallback(() => {
+        // username already taken
         toast.dismiss()
         setStatus(USER_STATUS.INITIAL)
         toast.error(
@@ -67,6 +68,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     const handleJoiningAccept = useCallback(
         ({ user, users }: { user: User; users: RemoteUser[] }) => {
+            // user joined room
             setCurrentUser(user)
             setUsers(users)
             toast.dismiss()
@@ -81,6 +83,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     const handleUserLeft = useCallback(
         ({ user }: { user: User }) => {
+            // user left room
             toast.success(`${user.username} left the room`)
             setUsers(users.filter((u: User) => u.username !== user.username))
         },
@@ -89,6 +92,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     const handleRequestDrawing = useCallback(
         ({ socketId }: { socketId: SocketId }) => {
+            // sync drawing data
             socket.emit(SocketEvent.SYNC_DRAWING, { socketId, drawingData })
         },
         [drawingData, socket],
@@ -96,6 +100,7 @@ const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     const handleDrawingSync = useCallback(
         ({ drawingData }: { drawingData: DrawingData }) => {
+            // update drawing data
             setDrawingData(drawingData)
         },
         [setDrawingData],

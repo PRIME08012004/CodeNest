@@ -23,7 +23,7 @@ function SplitterComponent({ children }: { children: ReactNode }) {
         if (savedSizes) {
             sizes = JSON.parse(savedSizes)
         }
-        // When sidebar is closed, keep space for the 70px icon rail so editor doesn't slide underneath
+        // keep space for icon rail when closed
         if (!isSidebarOpen) {
             const railPercent = Math.max(0.5, (70 / width) * 100)
             return [railPercent, 100 - railPercent]
@@ -33,13 +33,13 @@ function SplitterComponent({ children }: { children: ReactNode }) {
 
     const getMinSizes = () => {
         if (isMobile) return [0, width]
-                 // Reserve space for icon rail (70px) + panel min (300px)
+                 // min sizes for sidebar + editor
                  return isSidebarOpen ? [370, 400] : [50, 0]
     }
 
     const getMaxSizes = () => {
         if (isMobile) return [0, width]
-                 // Icon rail (70px) + panel max (500px) => ~570px
+                 // max sizes for sidebar + editor
                  return isSidebarOpen ? [570, width] : [70, width]
     }
 

@@ -17,10 +17,12 @@ export const useContextMenu = ({
         if (!itemRef) return
 
         const closeMenu = () => {
+            // close menu
             setMenuOpen(false)
         }
 
         const handleRightClick = (e: MouseEvent) => {
+            // check if click is inside ref
             if (ref.current && ref.current.contains(e.target as Node)) {
                 setMenuOpen(true)
                 setCoords({
@@ -33,6 +35,7 @@ export const useContextMenu = ({
         }
 
         const handleItemContextMenu = (e: MouseEvent) => {
+            // prevent default context menu
             e.preventDefault()
             setMenuOpen(true)
             setCoords({

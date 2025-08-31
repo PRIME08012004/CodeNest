@@ -73,11 +73,7 @@ function FileStructureView() {
 
     const sortedFileStructure = sortFileSystemItem(fileStructure)
 
-    // Inline confirm dialog is available but we'll also perform direct delete from row menus
-    const requestConfirmDeleteFile = (id: Id, name?: string) =>
-        setConfirmDelete({ type: "file", id, name })
-    const requestConfirmDeleteDirectory = (id: Id, name?: string) =>
-        setConfirmDelete({ type: "directory", id, name })
+
 
     const performDelete = () => {
         if (!confirmDelete) return

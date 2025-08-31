@@ -12,9 +12,9 @@ import { useEffect } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 function EditorPage() {
-    // Listen user online/offline status
+    // track user activity
     useUserActivity()
-    // Enable fullscreen mode
+    // fullscreen
     useFullScreen()
     const navigate = useNavigate()
     const { roomId } = useParams()
@@ -22,7 +22,7 @@ function EditorPage() {
     const { socket } = useSocket()
     const location = useLocation()
 
-    // No need for theme switching since we're using dark theme everywhere
+    // dark theme everywhere
 
     useEffect(() => {
         if (currentUser.username.length > 0) return

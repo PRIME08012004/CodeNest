@@ -28,12 +28,12 @@ const io = new Server(server, {
 
 let userSocketMap: User[] = []
 
-// Function to get all users in a room
+// get users in room
 function getUsersInRoom(roomId: string): User[] {
 	return userSocketMap.filter((user) => user.roomId == roomId)
 }
 
-// Function to get room id by socket id
+// get room by socket id
 function getRoomId(socketId: SocketId): string | null {
 	const roomId = userSocketMap.find(
 		(user) => user.socketId === socketId
@@ -46,6 +46,7 @@ function getRoomId(socketId: SocketId): string | null {
 	return roomId
 }
 
+// get user by socket id
 function getUserBySocketId(socketId: SocketId): User | null {
 	const user = userSocketMap.find((user) => user.socketId === socketId)
 	if (!user) {
@@ -56,9 +57,9 @@ function getUserBySocketId(socketId: SocketId): User | null {
 }
 
 io.on("connection", (socket) => {
-	// Handle user actions
+	// user joins room
 	socket.on(SocketEvent.JOIN_REQUEST, ({ roomId, username }) => {
-		// Check is username exist in the room
+		// check if username taken
 		const isUsernameExist = getUsersInRoom(roomId).filter(
 			(u) => u.username === username
 		)
@@ -94,7 +95,7 @@ io.on("connection", (socket) => {
 		socket.leave(roomId)
 	})
 
-	// Handle file actions
+	// sync files
 	socket.on(
 		SocketEvent.SYNC_FILE_STRUCTURE,
 		({ fileStructure, openFiles, activeFile, socketId }) => {

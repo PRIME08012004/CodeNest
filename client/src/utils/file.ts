@@ -25,12 +25,12 @@ export const findParentDirectory = (
     directory: FileSystemItem,
     parentDirId: Id,
 ): FileSystemItem | null => {
-    // Checking the current directory matches the parentDirName
+    // check if this is the dir we want
     if (directory.id === parentDirId && directory.type === "directory") {
         return directory
     }
 
-    // Recursively searching children if it's a directory
+    // look in children
     if (directory.type === "directory" && directory.children) {
         for (const child of directory.children) {
             const found = findParentDirectory(child, parentDirId)
@@ -40,7 +40,7 @@ export const findParentDirectory = (
         }
     }
 
-    // Return null if not found
+    // not found
     return null
 }
 
@@ -71,24 +71,22 @@ export const getFileById = (
 }
 
 export const sortFileSystemItem = (item: FileSystemItem): FileSystemItem => {
-    // Recursively sort children if it's a directory
+    // sort dir contents
     if (item.type === "directory" && item.children) {
-        // Separate directories and files
+        // split dirs and files
         let directories = item.children.filter(
             (child) => child.type === "directory",
         )
         const files = item.children.filter((child) => child.type === "file")
 
-        // Sort directories by name (A-Z)
+        // sort by name
         directories.sort((a, b) => a.name.localeCompare(b.name))
-
-        // Recursively sort nested directories
-        directories = directories.map((dir) => sortFileSystemItem(dir))
-
-        // Sort files by name (A-Z)
         files.sort((a, b) => a.name.localeCompare(b.name))
 
-        // Combine sorted directories and files
+        // sort nested dirs
+        directories = directories.map((dir) => sortFileSystemItem(dir))
+
+        // hidden files first, then normal
         item.children = [
             ...directories.filter((dir) => dir.name.startsWith(".")),
             ...directories.filter((dir) => !dir.name.startsWith(".")),
