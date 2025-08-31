@@ -22,6 +22,8 @@ function EditorPage() {
     const { socket } = useSocket()
     const location = useLocation()
 
+    // No need for theme switching since we're using dark theme everywhere
+
     useEffect(() => {
         if (currentUser.username.length > 0) return
         const username = location.state?.username
