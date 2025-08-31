@@ -16,17 +16,28 @@ import { PiPencilSimpleFill } from "react-icons/pi"
 import {
     RiFileAddLine,
     RiFolderAddLine,
-    RiFolderUploadLine,
 } from "react-icons/ri"
 import RenameView from "./RenameView"
 import useResponsive from "@/hooks/useResponsive"
 
 function FileStructureView() {
-    const { fileStructure, createFile, createDirectory, collapseDirectories } =
-        useFileSystem()
+    const {
+        fileStructure,
+        createFile,
+        createDirectory,
+        deleteFile,
+        deleteDirectory,
+    } = useFileSystem()
     const explorerRef = useRef<HTMLDivElement | null>(null)
     const [selectedDirId, setSelectedDirId] = useState<Id | null>(null)
     const { minHeightReached } = useResponsive()
+    const [isCreating, setIsCreating] = useState<false | "file" | "directory">(false)
+    const [createName, setCreateName] = useState("")
+    const createInputRef = useRef<HTMLInputElement | null>(null)
+    const [confirmDelete, setConfirmDelete] = useState<
+        | { type: "file" | "directory"; id: Id; name?: string }
+        | null
+    >(null)
 
     const handleClickOutside = (e: MouseEvent) => {
         if (
@@ -37,55 +48,106 @@ function FileStructureView() {
         }
     }
 
-    const handleCreateFile = () => {
-        const fileName = prompt("Enter file name")
-        if (fileName) {
-            const parentDirId: Id = selectedDirId || fileStructure.id
-            createFile(parentDirId, fileName)
-        }
+    const startCreate = (type: "file" | "directory") => {
+        setIsCreating(type)
+        setCreateName("")
+        setTimeout(() => createInputRef.current?.focus(), 0)
     }
 
-    const handleCreateDirectory = () => {
-        const dirName = prompt("Enter directory name")
-        if (dirName) {
-            const parentDirId: Id = selectedDirId || fileStructure.id
-            createDirectory(parentDirId, dirName)
-        }
+    const confirmCreate = () => {
+        const name = createName.trim()
+        if (!name) return
+        const parentDirId: Id = selectedDirId || fileStructure.id
+        if (isCreating === "file") createFile(parentDirId, name)
+        if (isCreating === "directory") createDirectory(parentDirId, name)
+        setIsCreating(false)
+        setCreateName("")
     }
+
+    const cancelCreate = () => {
+        setIsCreating(false)
+        setCreateName("")
+    }
+
+
 
     const sortedFileStructure = sortFileSystemItem(fileStructure)
 
+    // Inline confirm dialog is available but we'll also perform direct delete from row menus
+    const requestConfirmDeleteFile = (id: Id, name?: string) =>
+        setConfirmDelete({ type: "file", id, name })
+    const requestConfirmDeleteDirectory = (id: Id, name?: string) =>
+        setConfirmDelete({ type: "directory", id, name })
+
+    const performDelete = () => {
+        if (!confirmDelete) return
+        if (confirmDelete.type === "file") {
+            deleteFile(confirmDelete.id)
+        } else {
+            deleteDirectory(confirmDelete.id)
+        }
+        setConfirmDelete(null)
+    }
+
     return (
-        <div onClick={handleClickOutside} className="flex flex-grow flex-col">
-            <div className="view-title flex justify-between">
-                <h2>Files</h2>
+        <div onClick={handleClickOutside} className="relative flex flex-grow flex-col bg-[#1a1a1a] w-full">
+            <div className="flex justify-between items-center p-4 border-b border-[#333333] bg-[#1a1a1a] relative">
+                <h2 className="text-white text-lg">Files</h2>
                 <div className="flex gap-2">
                     <button
-                        className="rounded-md px-1 hover:bg-darkHover"
-                        onClick={handleCreateFile}
+                        className="rounded-lg p-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
+                        onClick={() => startCreate("file")}
                         title="Create File"
                     >
                         <RiFileAddLine size={20} />
                     </button>
                     <button
-                        className="rounded-md px-1 hover:bg-darkHover"
-                        onClick={handleCreateDirectory}
+                        className="rounded-lg p-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
+                        onClick={() => startCreate("directory")}
                         title="Create Directory"
                     >
                         <RiFolderAddLine size={20} />
                     </button>
-                    <button
-                        className="rounded-md px-1 hover:bg-darkHover"
-                        onClick={collapseDirectories}
-                        title="Collapse All Directories"
-                    >
-                        <RiFolderUploadLine size={20} />
-                    </button>
+
                 </div>
+                {isCreating && (
+                    <div className="absolute left-4 top-full z-30 mt-3 w-[calc(100%-2rem)] max-w-[360px] overflow-hidden rounded-lg border border-[#333333] bg-[#0d0d0d] p-3 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+                        <label className="block text-sm text-gray-300 mb-2">
+                            {isCreating === "file" ? "Enter file name" : "Enter folder name"}
+                        </label>
+                        <input
+                            ref={createInputRef}
+                            value={createName}
+                            onChange={(e) => setCreateName(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") confirmCreate()
+                                if (e.key === "Escape") cancelCreate()
+                            }}
+                            placeholder={isCreating === "file" ? "index.ts" : "src"}
+                            className="w-full min-w-0 bg-[#262626] border border-[#333333] rounded-lg px-3 py-2 text-white outline-none focus:border-[#404040]"
+                        />
+                        <div className="mt-2 flex items-center justify-end gap-2">
+                            <button
+                                onClick={cancelCreate}
+                                className="px-3 py-2 rounded-lg hover:bg-[#262626] text-gray-300"
+                                title="Cancel"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmCreate}
+                                className="px-3 py-2 rounded-lg bg-[#333333] hover:bg-[#404040] text-white"
+                                title="Create"
+                            >
+                                OK
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
             <div
                 className={cn(
-                    "min-h-[200px] flex-grow overflow-auto pr-2 sm:min-h-0",
+                    "min-h-[200px] flex-grow overflow-auto p-4 sm:min-h-0 bg-[#1a1a1a] w-full",
                     {
                         "h-[calc(80vh-170px)]": !minHeightReached,
                         "h-[85vh]": minHeightReached,
@@ -99,9 +161,36 @@ function FileStructureView() {
                             key={item.id}
                             item={item}
                             setSelectedDirId={setSelectedDirId}
+                            
                         />
                     ))}
             </div>
+
+            {confirmDelete && (
+                <div className="absolute inset-0 z-40 flex items-start justify-center pt-24 bg-black/30">
+                    <div className="w-[90%] max-w-[360px] rounded-lg border border-[#333333] bg-[#0d0d0d] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
+                        <p className="text-white mb-4">
+                            {`Are you sure you want to delete ${
+                                confirmDelete.type === "file" ? "file" : "directory"
+                            }${confirmDelete.name ? ` \"${confirmDelete.name}\"` : ""}?`}
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setConfirmDelete(null)}
+                                className="px-3 py-2 rounded-lg hover:bg-[#262626] text-gray-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={performDelete}
+                                className="px-3 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
@@ -118,7 +207,7 @@ function Directory({
     const { coords, menuOpen, setMenuOpen } = useContextMenu({
         ref: dirRef,
     })
-    const { deleteDirectory, toggleDirectory } = useFileSystem()
+    const { toggleDirectory, deleteDirectory } = useFileSystem()
 
     const handleDirClick = (dirId: string) => {
         setSelectedDirId(dirId)
@@ -134,12 +223,7 @@ function Directory({
     const handleDeleteDirectory = (e: MouseEvent, id: Id) => {
         e.stopPropagation()
         setMenuOpen(false)
-        const isConfirmed = confirm(
-            `Are you sure you want to delete directory?`,
-        )
-        if (isConfirmed) {
-            deleteDirectory(id)
-        }
+        deleteDirectory(id)
     }
 
     // Add F2 key event listener to directory for renaming
@@ -171,7 +255,7 @@ function Directory({
     return (
         <div className="overflow-x-auto">
             <div
-                className="flex w-full items-center rounded-md px-2 py-1 hover:bg-darkHover"
+                className="flex w-full items-center rounded-lg px-3 py-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
                 onClick={() => handleDirClick(item.id)}
                 ref={dirRef}
             >
@@ -233,7 +317,7 @@ const File = ({
     item: FileSystemItem
     setSelectedDirId: (id: Id) => void
 }) => {
-    const { deleteFile, openFile } = useFileSystem()
+    const { openFile, deleteFile } = useFileSystem()
     const [isEditing, setEditing] = useState<boolean>(false)
     const { setIsSidebarOpen } = useViews()
     const { isMobile } = useWindowDimensions()
@@ -265,10 +349,7 @@ const File = ({
     const handleDeleteFile = (e: MouseEvent, id: Id) => {
         e.stopPropagation()
         setMenuOpen(false)
-        const isConfirmed = confirm(`Are you sure you want to delete file?`)
-        if (isConfirmed) {
-            deleteFile(id)
-        }
+        deleteFile(id)
     }
 
     // Add F2 key event listener to file for renaming
@@ -295,7 +376,7 @@ const File = ({
 
     return (
         <div
-            className="flex w-full items-center rounded-md px-2 py-1 hover:bg-darkHover"
+            className="flex w-full items-center rounded-md px-2 py-1 hover:bg-primaryLight text-white"
             onClick={() => handleFileClick(item.id)}
             ref={fileRef}
         >
@@ -349,7 +430,7 @@ const FileMenu = ({
 }) => {
     return (
         <div
-            className="absolute z-10 w-[150px] rounded-md border border-darkHover bg-dark p-1"
+            className="absolute z-10 w-[150px] rounded-lg border border-[#333333] bg-[#1a1a1a] p-2 text-white"
             style={{
                 top,
                 left,
@@ -357,14 +438,14 @@ const FileMenu = ({
         >
             <button
                 onClick={handleRenameFile}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1 hover:bg-darkHover"
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
             >
                 <PiPencilSimpleFill size={18} />
                 Rename
             </button>
             <button
                 onClick={(e) => handleDeleteFile(e, id)}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-danger hover:bg-darkHover"
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-[#262626] text-red-500 hover:text-red-400 transition-colors"
             >
                 <MdDelete size={20} />
                 Delete
@@ -388,7 +469,7 @@ const DirectoryMenu = ({
 }) => {
     return (
         <div
-            className="absolute z-10 w-[150px] rounded-md border border-darkHover bg-dark p-1"
+            className="absolute z-10 w-[150px] rounded-lg border border-[#333333] bg-[#1a1a1a] p-2 text-white"
             style={{
                 top,
                 left,
@@ -396,14 +477,14 @@ const DirectoryMenu = ({
         >
             <button
                 onClick={handleRenameDirectory}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1 hover:bg-darkHover"
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
             >
                 <PiPencilSimpleFill size={18} />
                 Rename
             </button>
             <button
                 onClick={(e) => handleDeleteDirectory(e, id)}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-danger hover:bg-darkHover"
+                className="flex w-full items-center gap-2 rounded-lg px-3 py-2 hover:bg-[#262626] text-red-500 hover:text-red-400 transition-colors"
             >
                 <MdDelete size={20} />
                 Delete
