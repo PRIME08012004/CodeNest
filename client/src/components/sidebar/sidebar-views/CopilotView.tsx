@@ -68,14 +68,14 @@ function CopilotView() {
             className="flex max-h-full min-h-[400px] w-full flex-col gap-2 p-4"
             style={{ height: viewHeight }}
         >
-            <h1 className="view-title">Copilot</h1>
+            <h1 className="text-lg text-white mb-4">🤖 Copilot</h1>
             <textarea
-                className="min-h-[120px] w-full rounded-md border-none bg-darkHover p-2 text-white outline-none"
+                className="min-h-[120px] w-full resize-none font-mono bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#404040] transition-colors"
                 placeholder="What code do you want to generate?"
                 onChange={(e) => setInput(e.target.value)}
             />
             <button
-                className="mt-1 flex w-full justify-center rounded-md bg-primary p-2 font-bold text-black outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-1 w-full font-semibold bg-[#333333] hover:bg-[#404040] text-white py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={generateCode}
                 disabled={isRunning}
             >
@@ -83,28 +83,34 @@ function CopilotView() {
             </button>
             {output && (
                 <div className="flex justify-end gap-4 pt-2">
-                    <button title="Copy Output" onClick={copyOutput}>
+                    <button 
+                        title="Copy Output" 
+                        onClick={copyOutput}
+                        className="p-2 rounded-lg hover:bg-[#333333] transition-colors"
+                    >
                         <LuCopy
                             size={18}
-                            className="cursor-pointer text-white"
+                            className="text-gray-400 hover:text-white transition-colors"
                         />
                     </button>
                     <button
                         title="Replace code in file"
                         onClick={replaceCodeInFile}
+                        className="p-2 rounded-lg hover:bg-[#333333] transition-colors"
                     >
                         <LuRepeat
                             size={18}
-                            className="cursor-pointer text-white"
+                            className="text-gray-400 hover:text-white transition-colors"
                         />
                     </button>
                     <button
                         title="Paste code in file"
                         onClick={pasteCodeInFile}
+                        className="p-2 rounded-lg hover:bg-[#333333] transition-colors"
                     >
                         <LuClipboardPaste
                             size={18}
-                            className="cursor-pointer text-white"
+                            className="text-gray-400 hover:text-white transition-colors"
                         />
                     </button>
                 </div>
