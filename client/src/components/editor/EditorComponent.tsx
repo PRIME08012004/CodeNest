@@ -11,7 +11,7 @@ function EditorComponent() {
     if (openFiles.length <= 0) {
         return (
             <div className="flex h-full w-full items-center justify-center">
-                <h1 className="text-xl text-white">
+                <h1 className="text-xl text-gray-400">
                     No file is currently open.
                 </h1>
             </div>
