@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install && npm run build && cp -r dist ../dist && echo 'Build completed successfully!'"
   },
   "dependencies": {
     "lottie-react": "^2.4.1"
