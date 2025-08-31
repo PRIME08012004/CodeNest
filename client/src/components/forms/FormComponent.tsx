@@ -89,39 +89,86 @@ const FormComponent = () => {
     }, [currentUser, location.state?.redirect, navigate, setStatus, socket, status])
 
     return (
-        <div className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 p-4 sm:w-[500px] sm:p-8">
-            <img src={logo} alt="Logo" className="w-full"/>
-            <form onSubmit={joinRoom} className="flex w-full flex-col gap-4">
-                <input
-                    type="text"
-                    name="roomId"
-                    placeholder="Room Id"
-                    className="w-full rounded-md border border-gray-500 bg-darkHover px-3 py-3 focus:outline-none"
-                    onChange={handleInputChanges}
-                    value={currentUser.roomId}
-                />
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    className="w-full rounded-md border border-gray-500 bg-darkHover px-3 py-3 focus:outline-none"
-                    onChange={handleInputChanges}
-                    value={currentUser.username}
-                    ref={usernameRef}
-                />
-                <button
-                    type="submit"
-                    className="mt-2 w-full rounded-md bg-primary px-8 py-3 text-lg font-semibold text-black"
-                >
-                    Join
-                </button>
-            </form>
-            <button
-                className="cursor-pointer select-none underline"
-                onClick={createNewRoomId}
-            >
-                Generate Unique Room Id         
-            </button>
+        <div className="w-full max-w-md">
+            {/* Ultra-modern glassmorphic form */}
+            <div className="bg-[#1a1a1a] p-8 relative overflow-hidden border border-[#333333] rounded-lg">
+                {/* Header section */}
+                <div className="relative text-center mb-8">
+                    <h2 className="text-3xl font-bold text-white mb-3">Join Workspace</h2>
+                    <p className="text-gray-400 text-sm">Enter the future of collaborative coding</p>
+                </div>
+
+                <form onSubmit={joinRoom} className="relative space-y-6">
+                    {/* Room ID input with floating label */}
+                    <div className="relative group">
+                        <input
+                            id="roomId"
+                            type="text"
+                            name="roomId"
+                            placeholder=" "
+                            className="w-full peer placeholder-transparent bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gray-500 transition-colors"
+                            onChange={handleInputChanges}
+                            value={currentUser.roomId}
+                        />
+                        <label 
+                            htmlFor="roomId" 
+                            className="absolute left-4 -top-2.5 text-sm font-medium text-gray-400 bg-[#1a1a1a] px-2 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-white peer-focus:text-sm peer-focus:bg-[#1a1a1a]"
+                        >
+                            Room ID
+                        </label>
+                    </div>
+                    
+                    {/* Username input with floating label */}
+                    <div className="relative group">
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            placeholder=" "
+                            className="w-full peer placeholder-transparent bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gray-500 transition-colors"
+                            onChange={handleInputChanges}
+                            value={currentUser.username}
+                            ref={usernameRef}
+                        />
+                        <label 
+                            htmlFor="username" 
+                            className="absolute left-4 -top-2.5 text-sm font-medium text-gray-400 bg-[#1a1a1a] px-2 transition-all duration-300 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-3 peer-placeholder-shown:bg-transparent peer-focus:-top-2.5 peer-focus:text-white peer-focus:text-sm peer-focus:bg-[#1a1a1a]"
+                        >
+                            Username
+                        </label>
+                    </div>
+
+                    {/* Ultra-modern submit button */}
+                    <button
+                        type="submit"
+                        className="w-full text-lg font-bold relative overflow-hidden group bg-[#333333] hover:bg-[#404040] text-white py-3 rounded-lg transition-colors"
+                        disabled={status === USER_STATUS.ATTEMPTING_JOIN}
+                    >
+                        {/* Button shimmer effect */}
+                        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000"></div>
+                        
+                        {status === USER_STATUS.ATTEMPTING_JOIN ? (
+                            <span className="flex items-center justify-center relative z-10">
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
+                                Connecting...
+                            </span>
+                        ) : (
+                            <span className="relative z-10">Launch Workspace</span>
+                        )}
+                    </button>
+                </form>
+
+                {/* Generate room ID link with neon effect */}
+                <div className="mt-8 text-center relative">
+                    <button
+                        type="button"
+                        className="text-gray-400 hover:text-white text-sm font-semibold transition-colors duration-300 px-4 py-2 rounded-lg border border-[#333333] hover:border-[#404040] bg-[#262626] hover:bg-[#333333]"
+                        onClick={createNewRoomId}
+                    >
+                        ✨ Generate New Room ID
+                    </button>
+                </div>
+            </div>
         </div>
     )
 }
