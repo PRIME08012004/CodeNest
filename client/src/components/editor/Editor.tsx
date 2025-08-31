@@ -18,6 +18,7 @@ import CodeMirror, {
 import { useEffect, useMemo, useState } from "react"
 import toast from "react-hot-toast"
 import { cursorTooltipBaseTheme, tooltipField } from "./tooltip"
+import { EditorView } from "@codemirror/view"
 
 function Editor() {
     const { users, currentUser } = useAppContext()
@@ -56,12 +57,58 @@ function Editor() {
     usePageEvents()
 
     useEffect(() => {
+        const codeNestTheme = EditorView.theme(
+            {
+                "&": {
+                    backgroundColor: "#000000",
+                    color: "#ffffff",
+                },
+                ".cm-scroller": {
+                    backgroundColor: "#000000",
+                },
+                ".cm-content": {
+                    backgroundColor: "#0d0d0d",
+                },
+                ".cm-gutters": {
+                    backgroundColor: "#000000",
+                    color: "#a3a3a3",
+                    borderRight: "1px solid #333333",
+                },
+                ".cm-lineNumbers .cm-gutterElement": {
+                    color: "#a3a3a3",
+                },
+                ".cm-foldGutter .cm-gutterElement": {
+                    color: "#a3a3a3",
+                },
+                ".cm-activeLine": {
+                    backgroundColor: "#111111",
+                },
+                ".cm-activeLineGutter": {
+                    backgroundColor: "#111111",
+                    color: "#ffffff",
+                },
+                ".cm-selectionBackground, .cm-content ::selection": {
+                    backgroundColor: "#1f1f1f80",
+                },
+                ".cm-cursor": {
+                    borderLeftColor: "#ffffff",
+                },
+                ".cm-tooltip": {
+                    backgroundColor: "#000000",
+                    border: "1px solid #333333",
+                    color: "#ffffff",
+                },
+            },
+            { dark: true },
+        )
+
         const extensions = [
             color,
             hyperLink,
             tooltipField(filteredUsers),
             cursorTooltipBaseTheme,
             scrollPastEnd(),
+            codeNestTheme,
         ]
         const langExt = loadLanguage(language.toLowerCase() as LanguageName)
         if (langExt) {

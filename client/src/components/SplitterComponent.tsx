@@ -11,29 +11,36 @@ function SplitterComponent({ children }: { children: ReactNode }) {
 
     const getGutter = () => {
         const gutter = document.createElement("div")
-        gutter.className = "h-full cursor-e-resizer hidden md:block"
-        gutter.style.backgroundColor = "#e1e1ffb3"
+                 gutter.className = "h-full cursor-col-resize hidden md:flex md:items-center md:justify-center hover:before:opacity-100 before:opacity-0 before:content-[''] before:absolute before:w-[2px] before:h-full before:bg-[#404040] before:transition-opacity relative after:content-[''] after:absolute after:w-[4px] after:h-full after:bg-transparent hover:after:bg-[#404040]/10 after:transition-colors"
+                 gutter.style.backgroundColor = "transparent"
         return gutter
     }
 
     const getSizes = () => {
         if (isMobile) return [0, width]
         const savedSizes = getItem("editorSizes")
-        let sizes = [35, 65]
+                 let sizes = [30, 70]
         if (savedSizes) {
             sizes = JSON.parse(savedSizes)
         }
-        return isSidebarOpen ? sizes : [0, width]
+        // When sidebar is closed, keep space for the 70px icon rail so editor doesn't slide underneath
+        if (!isSidebarOpen) {
+            const railPercent = Math.max(0.5, (70 / width) * 100)
+            return [railPercent, 100 - railPercent]
+        }
+        return sizes
     }
 
     const getMinSizes = () => {
         if (isMobile) return [0, width]
-        return isSidebarOpen ? [350, 350] : [50, 0]
+                 // Reserve space for icon rail (70px) + panel min (300px)
+                 return isSidebarOpen ? [370, 400] : [50, 0]
     }
 
     const getMaxSizes = () => {
-        if (isMobile) return [0, Infinity]
-        return isSidebarOpen ? [Infinity, Infinity] : [0, Infinity]
+        if (isMobile) return [0, width]
+                 // Icon rail (70px) + panel max (500px) => ~570px
+                 return isSidebarOpen ? [570, width] : [70, width]
     }
 
     const handleGutterDrag = (sizes: number[]) => {
@@ -41,7 +48,7 @@ function SplitterComponent({ children }: { children: ReactNode }) {
     }
 
     const getGutterStyle = () => ({
-        width: "7px",
+                 width: "6px",
         display: isSidebarOpen && !isMobile ? "block" : "none",
     })
 
@@ -54,11 +61,11 @@ function SplitterComponent({ children }: { children: ReactNode }) {
             dragInterval={1}
             direction="horizontal"
             gutterAlign="center"
-            cursor="e-resize"
+                         cursor="col-resize"
             snapOffset={30}
             gutterStyle={getGutterStyle}
             onDrag={handleGutterDrag}
-            className="flex h-screen min-h-screen max-w-full items-center justify-center overflow-hidden"
+            className="flex h-screen min-h-screen w-full items-stretch overflow-hidden"
         >
             {children}
         </Split>

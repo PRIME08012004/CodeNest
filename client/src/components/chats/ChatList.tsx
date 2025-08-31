@@ -35,7 +35,7 @@ function ChatList() {
 
     return (
         <div
-            className="flex-grow overflow-auto rounded-md bg-darkHover p-2"
+            className="flex-grow overflow-auto rounded-lg bg-[#1a1a1a] border border-[#333333] p-4"
             ref={messagesContainerRef}
             onScroll={handleScroll}
         >
@@ -45,17 +45,17 @@ function ChatList() {
                     <div
                         key={index}
                         className={
-                            "mb-2 w-[80%] self-end break-words rounded-md bg-dark px-3 py-2" +
+                            "mb-2 w-[80%] self-end break-words rounded-lg bg-[#262626] px-4 py-3" +
                             (message.username === currentUser.username
                                 ? " ml-auto "
                                 : "")
                         }
                     >
                         <div className="flex justify-between">
-                            <span className="text-xs text-primary">
+                            <span className="text-xs text-gray-400">
                                 {message.username}
                             </span>
-                            <span className="text-xs text-white">
+                            <span className="text-xs text-gray-500">
                                 {message.timestamp}
                             </span>
                         </div>

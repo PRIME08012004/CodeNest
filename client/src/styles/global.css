@@ -1,4 +1,5 @@
 @import url("tldraw/tldraw.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,19 +7,97 @@
 
 @layer components {
     .view-title {
-        @apply mb-2 w-full border-b pb-2 text-start text-lg;
+        @apply mb-6 w-full border-b border-border pb-4 text-start text-xl font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+    }
+    
+    .btn-primary {
+        @apply bg-gradient-to-r from-primary to-accent hover:from-primaryHover hover:to-accentHover text-white font-semibold px-6 py-3 rounded-2xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-neon hover:shadow-neon-lg transform hover:scale-105 active:scale-95 relative overflow-hidden;
+    }
+    
+    .btn-primary::before {
+        content: '';
+        @apply absolute inset-0 bg-gradient-to-r from-white to-white opacity-0 hover:opacity-20 transition-opacity duration-300 rounded-2xl;
+    }
+    
+    .btn-secondary {
+        @apply bg-glass border border-border hover:border-accent text-light font-semibold px-6 py-3 rounded-2xl backdrop-blur-xl transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-darkHover hover:shadow-glass transform hover:scale-105 active:scale-95;
+    }
+    
+          /* Light theme input for landing page */
+      .input-field {
+          @apply bg-glass border border-border hover:border-primary focus:border-accent text-light placeholder-muted px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-30 backdrop-blur-xl transition-all duration-300 ease-in-out hover:shadow-glass focus:shadow-glass-lg;
+      }
+
+      /* Dark theme input for editor pages */
+      .input-field-dark {
+          @apply bg-primaryLight border border-accent hover:border-accentHover focus:border-accentLight text-white placeholder-muted px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-30 transition-all duration-300 ease-in-out;
+      }
+      
+      /* Light theme card for landing page */
+      .card {
+          @apply bg-glass border border-border rounded-3xl shadow-glass backdrop-blur-xl hover:shadow-glass-lg transition-all duration-300 ease-in-out;
+      }
+
+      /* Dark theme card for editor pages */
+      .card-dark {
+          @apply bg-primaryLight border border-accent rounded-3xl shadow-lg transition-all duration-300 ease-in-out;
+      }
+    
+    .card-neon {
+        @apply bg-gradient-to-br from-darkSecondary via-darkTertiary to-darkSecondary border border-accent/30 rounded-3xl shadow-neon backdrop-blur-xl hover:shadow-neon-lg transition-all duration-300 ease-in-out hover:border-accent/50;
+    }
+    
+    .sidebar-item {
+        @apply flex items-center px-4 py-3 rounded-2xl text-light hover:bg-glass hover:backdrop-blur-xl transition-all duration-300 ease-in-out cursor-pointer hover:shadow-glass transform hover:scale-105 active:scale-95;
+    }
+    
+    .sidebar-item.active {
+        @apply bg-gradient-to-r from-primary/20 to-accent/20 border border-accent/30 text-primary shadow-neon;
+    }
+    
+    .glass-panel {
+        @apply bg-glass backdrop-blur-2xl border border-border/50 rounded-3xl shadow-glass;
+    }
+    
+    .neon-text {
+        @apply bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent;
+    }
+    
+    .floating-element {
+        @apply animate-float;
+    }
+    
+    .glow-effect {
+        @apply animate-glow;
     }
 }
 
+/* Global dark theme */
 body {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    line-height: 1.6;
+    min-height: 100vh;
+    background: #000000;
+    color: #ffffff;
 
-    --sb-track-color: #363A2D;
-    --sb-thumb-color: #F2DE9B;
-    --sb-size: 6px;
+    --sb-track-color: #333333;
+    --sb-thumb-color: #666666;
+    --sb-size: 10px;
+}
+
+/* Subtle dark background effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    z-index: -1;
 }
 
 ::-webkit-scrollbar {
@@ -61,14 +140,16 @@ body {
 }
 
 .cm-editor .cm-scroller {
-    font-family: "Space Mono", monospace;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 14px;
+    line-height: 1.5;
     /* min-height: 100vh; */
 }
 
 select {
-    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
     cursor: pointer;
 }
 

@@ -16,8 +16,7 @@ function SettingsView() {
         setFontSize,
         fontFamily,
         setFontFamily,
-        showGitHubCorner,
-        setShowGitHubCorner,
+
         resetSettings,
     } = useSettings()
     const { viewHeight } = useResponsive()
@@ -30,8 +29,7 @@ function SettingsView() {
         setLanguage(e.target.value)
     const handleFontSizeChange = (e: ChangeEvent<HTMLSelectElement>) =>
         setFontSize(parseInt(e.target.value))
-    const handleShowGitHubCornerChange = (e: ChangeEvent<HTMLInputElement>) =>
-        setShowGitHubCorner(e.target.checked)
+
 
     useEffect(() => {
         // Set editor font family
@@ -48,7 +46,7 @@ function SettingsView() {
             className="flex flex-col items-center gap-2 p-4"
             style={{ height: viewHeight }}
         >
-            <h1 className="view-title">Settings</h1>
+            <h1 className="text-lg text-white mb-4">⚙️ Settings</h1>
             {/* Choose Font Family option */}
             <div className="flex w-full items-end gap-2">
                 <Select
@@ -61,7 +59,7 @@ function SettingsView() {
                 <select
                     value={fontSize}
                     onChange={handleFontSizeChange}
-                    className="rounded-md border-none bg-darkHover px-4 py-2 text-white outline-none"
+                    className="bg-[#262626] border border-[#333333] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#404040] transition-colors"
                     title="Font Size"
                 >
                     {[...Array(13).keys()].map((size) => {
@@ -87,22 +85,9 @@ function SettingsView() {
                 options={langNames}
                 title="Language"
             />
-            {/* Show GitHub corner option */}
-            <div className="mt-4 flex w-full items-center justify-between">
-                <label>Show github corner</label>
-                <label className="relative inline-flex cursor-pointer items-center">
-                    <input
-                        className="peer sr-only"
-                        type="checkbox"
-                        onChange={handleShowGitHubCornerChange}
-                        checked={showGitHubCorner}
-                        title="Toggle GitHub corner visibility"
-                    />
-                    <div className="peer h-6 w-12 rounded-full bg-darkHover outline-none duration-100 after:absolute after:left-1 after:top-1 after:flex after:h-4 after:w-4 after:items-center after:justify-center after:rounded-full after:bg-white after:font-bold after:outline-none after:duration-500 peer-checked:after:translate-x-6 peer-checked:after:border-white peer-focus:outline-none"></div>
-                </label>
-            </div>
+            
             <button
-                className="mt-auto w-full rounded-md border-none bg-darkHover px-4 py-2 text-white outline-none"
+                className="mt-auto w-full bg-[#262626] hover:bg-[#333333] text-white py-3 rounded-lg transition-colors border border-[#333333] hover:border-[#404040]"
                 onClick={resetSettings}
             >
                 Reset to default

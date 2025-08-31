@@ -175,30 +175,48 @@ function FilesView() {
 
     return (
         <div
-            className="flex select-none flex-col gap-1 px-4 py-2"
+            className="flex select-none flex-col gap-4 px-6 py-6 bg-[#1a1a1a] text-white"
             style={{ height: viewHeight, maxHeight: viewHeight }}
         >
+            <h2 className="text-lg text-white mb-4">📁 Files</h2>
             <FileStructureView />
             <div
-                className={cn(`flex min-h-fit flex-col justify-end pt-2`, {
+                className={cn(`flex min-h-fit flex-col justify-end pt-6 space-y-3`, {
                     hidden: minHeightReached,
                 })}
             >
-                <hr />
-                <button
-                    className="mt-2 flex w-full justify-start rounded-md p-2 transition-all hover:bg-darkHover"
-                    onClick={handleOpenDirectory}
-                    disabled={isLoading}
-                >
-                    <TbFileUpload className="mr-2" size={24} />
-                    {isLoading ? "Loading..." : "Open File/Folder"}
-                </button>
-                <button
-                    className="flex w-full justify-start rounded-md p-2 transition-all hover:bg-darkHover"
-                    onClick={downloadFilesAndFolders}
-                >
-                    <BiArchiveIn className="mr-2" size={22} /> Download Code
-                </button>
+                <div className="border-t border-[#333333] pt-6 space-y-3">
+                    <button
+                        className="flex w-full items-center rounded-lg px-3 py-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
+                        onClick={handleOpenDirectory}
+                        disabled={isLoading}
+                    >
+                        {/* Button shimmer effect */}
+
+                        
+                        <TbFileUpload className="mr-3" size={20} />
+                        <span className="text-sm font-semibold relative z-10">
+                            {isLoading ? (
+                                <span className="flex items-center">
+                                    <div className="w-4 h-4 border-2 border-[#333333] border-t-white rounded-full animate-spin mr-2"></div>
+                                    Loading...
+                                </span>
+                            ) : (
+                                "Open File/Folder"
+                            )}
+                        </span>
+                    </button>
+                    <button
+                        className="flex w-full items-center rounded-lg px-3 py-2 hover:bg-[#262626] text-gray-400 hover:text-white transition-colors"
+                        onClick={downloadFilesAndFolders}
+                    >
+                        {/* Button shimmer effect */}
+
+                        
+                        <BiArchiveIn className="mr-3" size={20} />
+                        <span className="text-sm font-semibold relative z-10">Download Code</span>
+                    </button>
+                </div>
             </div>
         </div>
     )

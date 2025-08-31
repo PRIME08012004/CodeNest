@@ -45,15 +45,15 @@ function UsersView() {
     }
 
     return (
-        <div className="flex flex-col p-4" style={{ height: viewHeight }}>
-            <h1 className="view-title">Users</h1>
+        <div className="flex flex-col p-4 bg-[#1a1a1a]" style={{ height: viewHeight }}>
+            <h1 className="text-lg text-white mb-4">Users</h1>
             {/* List of connected users */}
             <Users />
             <div className="flex flex-col items-center gap-4 pt-4">
                 <div className="flex w-full gap-4">
                     {/* Share URL button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-white p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-lg bg-[#262626] hover:bg-[#333333] p-3 text-white transition-colors"
                         onClick={shareURL}
                         title="Share Link"
                     >
@@ -61,7 +61,7 @@ function UsersView() {
                     </button>
                     {/* Copy URL button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-white p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-lg bg-[#262626] hover:bg-[#333333] p-3 text-white transition-colors"
                         onClick={copyURL}
                         title="Copy Link"
                     >
@@ -69,7 +69,7 @@ function UsersView() {
                     </button>
                     {/* Leave room button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-primary p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-lg bg-[#262626] hover:bg-[#333333] p-3 text-red-500 hover:text-red-400 transition-colors"
                         onClick={leaveRoom}
                         title="Leave room"
                     >

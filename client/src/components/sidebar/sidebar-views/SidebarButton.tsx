@@ -26,20 +26,30 @@ const ViewButton = ({ viewName, icon }: ViewButtonProps) => {
     }
 
     return (
-        <div className="relative flex flex-col items-center">
+        <div className="relative flex flex-col items-center after:absolute after:inset-0 after:rounded-lg after:transition-opacity after:duration-300 hover:after:opacity-100 after:opacity-0 after:bg-gradient-to-r after:from-[#333333] after:to-[#404040] after:blur-xl after:-z-10">
             <button
                 onClick={() => handleViewClick(viewName)}
-                onMouseEnter={() => setShowTooltip(true)} // Show tooltip again on hover
-                className={`${buttonStyles.base} ${buttonStyles.hover}`}
+                onMouseEnter={() => setShowTooltip(true)}
+                className={`${buttonStyles.base} ${buttonStyles.hover} ${
+                    activeView === viewName ? 'bg-[#262626] border-[#404040] text-white shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-gray-400'
+                }`}
                 {...(showTooltip && {
                     "data-tooltip-id": `tooltip-${viewName}`,
                     "data-tooltip-content": viewName,
                 })}
             >
-                <div className="flex items-center justify-center">{icon}</div>
-                {/* Show dot for new message in chat View Button */}
+                {/* Button glow effect */}
+
+                
+                <div className="flex items-center justify-center relative z-10">
+                    <span className="transition-colors">
+                        {icon}
+                    </span>
+                </div>
+                
+                {/* Enhanced notification dot for chat */}
                 {viewName === VIEWS.CHATS && isNewMessage && (
-                    <div className="absolute right-0 top-0 h-3 w-3 rounded-full bg-primary"></div>
+                    <div className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-red-500 border border-[#333333]"></div>
                 )}
             </button>
             {/* render the tooltip */}
