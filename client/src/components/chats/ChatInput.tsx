@@ -47,6 +47,8 @@ function ChatInput() {
             <button
                 className="flex items-center justify-center rounded-r-lg bg-[#333333] hover:bg-[#404040] px-4 py-3 text-white transition-colors"
                 type="submit"
+                title="Send message"
+                aria-label="Send message"
             >
                 <LuSendHorizonal size={24} />
             </button>

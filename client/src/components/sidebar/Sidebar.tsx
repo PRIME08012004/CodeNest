@@ -77,7 +77,7 @@ function Sidebar() {
                     icon={viewIcons[VIEWS.SETTINGS]}
                 />
 
-                {/* Button to change activity state coding or drawing */}
+                {/* toggle coding/drawing mode */}
                 <div className="relative flex flex-col items-center mt-auto after:absolute after:inset-0 after:rounded-lg after:transition-opacity after:duration-300 hover:after:opacity-100 after:opacity-0 after:bg-gradient-to-r after:from-[#333333] after:to-[#404040] after:blur-xl after:-z-10">
                     <button
                         className="relative flex items-center justify-center rounded-lg p-2 transition-all duration-300 border border-transparent hover:bg-[#262626] hover:border-[#404040] hover:shadow-[0_0_10px_rgba(255,255,255,0.1)] text-gray-400 hover:text-white"
