@@ -13,14 +13,23 @@ const app = express()
 
 app.use(express.json())
 
-app.use(cors())
+// CORS configuration
+const corsOptions = {
+	origin: process.env.FRONTEND_URL || "*",
+	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+	allowedHeaders: ["Content-Type", "Authorization"]
+}
+
+app.use(cors(corsOptions))
 
 app.use(express.static(path.join(__dirname, "public"))) // Serve static files
 
 const server = http.createServer(app)
 const io = new Server(server, {
 	cors: {
-		origin: "*",
+		origin: process.env.FRONTEND_URL || "*",
+		credentials: true
 	},
 	maxHttpBufferSize: 1e8,
 	pingTimeout: 60000,
