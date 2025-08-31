@@ -26,7 +26,7 @@ const User = ({ user }: { user: RemoteUser }) => {
             title={title}
         >
             <Avatar name={username} size="50" round={"12px"} title={title} />
-            <p className="line-clamp-2 max-w-full text-ellipsis break-words">
+            <p className="line-clamp-2 max-w-full text-ellipsis break-words text-white">
                 {username}
             </p>
             <div
