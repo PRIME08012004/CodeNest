@@ -1,8 +1,0 @@
-{
-  "scripts": {
-    "build": "cd client && npm install && npm run build"
-  },
-  "dependencies": {
-    "lottie-react": "^2.4.1"
-  }
-}
